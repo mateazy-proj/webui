@@ -1,0 +1,10 @@
+<div class="d-flex justify-content-between mb-4">
+    <p class="fs-4 text-lg-end fw-semibold lh-lg mb-0">
+        {{pageTitle}}
+    </p>
+    @if(buttonOptions.display){
+    <button type="button" class="btn btn-success btn-lg" (click)="triggerAction()">
+        {{buttonOptions.title}}
+    </button>
+    }
+</div>
