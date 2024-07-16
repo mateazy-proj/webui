@@ -1,2 +1,6 @@
-<app-page-header pageTitle="Title" [buttonOptions]="buttonOptions" (eventHandler)="eventHandler()"></app-page-header>
-<app-project-list></app-project-list>
+<app-page-header [pageTitle]="title" [buttonOptions]="buttonOptions" (eventHandler)="eventHandler()"></app-page-header>
+<router-outlet></router-outlet>
+
+<div class="visually-hidden">
+    <input type="file" [accept]="fileTypes" (change)="onFileChange($event)" #file>
+</div>

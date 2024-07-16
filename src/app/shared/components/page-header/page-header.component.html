@@ -4,6 +4,9 @@
     </p>
     @if(buttonOptions.display){
     <button type="button" class="btn btn-success btn-lg" (click)="triggerAction()">
+        @if(buttonOptions.icon){
+        <i class="bi {{buttonOptions.icon}}"></i>
+        }
         {{buttonOptions.title}}
     </button>
     }

@@ -1,1 +1,15 @@
-<p>project-list works!</p>
+<div class="d-flex flex-column gap-2">
+    @for(project of projects; track project.name){
+    <div class="d-flex flex-row justify-content-between border border-dark-subtle p-2 rounded align-items-center">
+        <div class="name">
+            {{project.name}}
+        </div>
+        <div class="description">
+            {{project.description}}
+        </div>
+        <div class="download">
+            <button class="btn btn-outline-primary"><i class="bi bi-download"></i></button>
+        </div>
+    </div>
+    }
+</div>
