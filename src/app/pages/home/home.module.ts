@@ -19,7 +19,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     HomeRoutingModule,
     CommonModule,
     SharedModule,
-    ReactiveFormsModule,
 
   ]
 })

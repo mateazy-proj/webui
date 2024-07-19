@@ -5,6 +5,7 @@ import { WrapperComponent } from './components/wrapper/wrapper.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -17,12 +18,14 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule,
     CommonModule,
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule
   ],
   exports: [
     PageHeaderComponent,
     WrapperComponent,
-    NavbarComponent
+    NavbarComponent,
+    ReactiveFormsModule
   ]
 })
 export class SharedModule { }

@@ -1,1 +1,15 @@
-<p>product-list works!</p>
+<!-- page header -->
+<app-page-header [pageTitle]="title" [buttonOptions]="buttonOptions" (eventHandler)="eventHandler()"></app-page-header>
+
+<!-- search -->
+<app-product-list-search (emitFormGroup)="filterChanges($event)"></app-product-list-search>
+
+<!-- list and view -->
+<div class="row">
+    <div class="col">
+        <app-product-list-list></app-product-list-list>
+    </div>
+    <div class="col-4">
+        <app-product-list-view></app-product-list-view>
+    </div>
+</div>

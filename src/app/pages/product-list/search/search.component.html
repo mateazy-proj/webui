@@ -1,1 +1,27 @@
-<p>search works!</p>
+<form [formGroup]="form" (submit)="submit()" (change)="submit()" class="row align-items-center mb-4">
+    <div class="col-3">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" value="" id="checkImage" formControlName="checkImage">
+            <label class="form-check-label" for="checkImage">
+                Items sem imagem
+            </label>
+        </div>
+    </div>
+
+
+    <div class="col input-group input-group">
+        <span class="input-group-text" id="name">Nome</span>
+        <input type="text" class="form-control" formControlName="name" aria-label="Sizing example input"
+            aria-describedby="name" name="name">
+    </div>
+
+    <div class="col input-group input-group">
+        <span class="input-group-text" id="description">Descrição</span>
+        <input type="text" class="form-control" formControlName="description" aria-label="Sizing example input"
+            aria-describedby="description" name="description">
+    </div>
+    <div class="col-1">
+        <button class="btn btn-primary" type="submit">Filtrar</button>
+    </div>
+
+</form>
