@@ -14,7 +14,7 @@ import { ProductListRoutingModule } from './product-list-routing.module';
     ViewComponent,
     SearchComponent,
     ListComponent,
-    ProductListComponent
+    ProductListComponent,
   ],
   imports: [
     CommonModule,

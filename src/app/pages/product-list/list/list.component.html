@@ -1,1 +1,42 @@
-<p>list works!</p>
+<table class="table table-striped">
+    <thead>
+        <th class="user-select-none" scope="col">EDIT</th>
+        <th class="user-select-none" scope="col" sortable="id" (sort)="onSort($event)">ID</th>
+        <th class="user-select-none" scope="col" sortable="image" (sort)="onSort($event)">IMAGEM</th>
+        <th class="user-select-none" scope="col" sortable="name" (sort)="onSort($event)">NOME</th>
+        <th class="user-select-none" scope="col" sortable="description" (sort)="onSort($event)">DESCRIÇÃO</th>
+        <th class="user-select-none" scope="col" sortable="unit" (sort)="onSort($event)">UN</th>
+    </thead>
+    <tbody>
+        @for(item of listData; track item.id){
+        <tr>
+            <td>
+                <button class="btn btn-primary" (click)="handleEditClick(item)">
+                    <i class="bi bi-pencil-square"></i>
+                </button>
+            </td>
+            <td>
+                {{item.id}}
+            </td>
+            <td>
+                <img [src]="item.image" style="height: 50px;" class=" rounded img-fluid" [alt]="item.name">
+            </td>
+            <td>
+                {{item.name}}
+            </td>
+            <td>
+                {{item.description}}
+            </td>
+            <td>
+                {{item.unit}}
+            </td>
+
+        </tr>
+        }@empty {
+        <tr>
+            <td colspan="6" style="text-align: center">Nenhum item encontrado</td>
+        </tr>
+        }
+    </tbody>
+
+</table>

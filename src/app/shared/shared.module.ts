@@ -6,6 +6,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ApiService } from './services/api.service';
+import { HttpClientModule } from '@angular/common/http';
+import { NgbdSortableHeader } from './directives/sort-event.directive';
 
 
 
@@ -13,7 +16,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   declarations: [
     PageHeaderComponent,
     WrapperComponent,
-    NavbarComponent
+    NavbarComponent,
+    NgbdSortableHeader
   ],
   imports: [
     RouterModule,
@@ -25,7 +29,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     PageHeaderComponent,
     WrapperComponent,
     NavbarComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    NgbdSortableHeader
+  ],
+  providers: [
+    ApiService
   ]
 })
 export class SharedModule { }

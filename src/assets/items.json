@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "image": "assets/cano.png",
+        "name": "Item 1",
+        "description": "Descrição 1",
+        "unit": "M"
+    },
+    {
+        "id": 2,
+        "image": "assets/cano.png",
+        "name": "Item 2",
+        "description": "Descrição 2",
+        "unit": "M"
+    },
+    {
+        "id": 3,
+        "image": "assets/cano.png",
+        "name": "Item 3",
+        "description": "Descrição 3",
+        "unit": "M"
+    },
+    {
+        "id": 4,
+        "image": "assets/cano.png",
+        "name": "Item 4",
+        "description": "Descrição 4",
+        "unit": "M"
+    },
+    {
+        "id": 6,
+        "image": "assets/cano.png",
+        "name": "Item 6",
+        "description": "Descrição 6",
+        "unit": "M"
+    },
+    {
+        "id": 5,
+        "image": "assets/cano.png",
+        "name": "Item 5",
+        "description": "Descrição 5",
+        "unit": "M"
+    }
+]
