@@ -13,7 +13,6 @@ import { ProductListRoutingModule } from './product-list-routing.module';
   declarations: [
     ViewComponent,
     SearchComponent,
-    ListComponent,
     ProductListComponent,
   ],
   imports: [

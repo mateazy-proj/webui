@@ -15,7 +15,7 @@ export class HomeComponent {
     title: "Carregar projeto",
     icon: 'bi-upload'
   };
-  fileTypes = '.xlsx, .csv';
+  fileTypes = '.csv';
 
   constructor(private router: Router,
     private route: ActivatedRoute

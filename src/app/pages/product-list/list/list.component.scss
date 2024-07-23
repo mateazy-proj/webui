@@ -1,3 +1,30 @@
 th {
+    --borderColor: #DEE2E6;
     cursor: pointer;
+    border-left: 1px solid var(--borderColor);
+    border-bottom: 1px solid var(--borderColor);
+    padding: 10px;
+    text-align: center;
+}
+
+th:first-child {
+    border-left: 0
+}
+
+td {
+    vertical-align: middle;
+}
+
+#drop-area {
+    border: 2px dashed #ccc;
+    text-align: center;
+    /* Center text vertically */
+    line-height: 20px;
+    padding: 5px 10px;
+    color: #666;
+}
+
+#drop-area.highlight {
+    background-color: #f0f0f0;
+    /* Example: Highlight color */
 }

@@ -6,6 +6,8 @@ import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { UploadProjectComponent } from './upload-project/upload-project.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ProductListModule } from '../product-list/product-list.module';
+import { ListComponent } from '../product-list/list/list.component';
 
 
 
@@ -18,8 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     HomeRoutingModule,
     CommonModule,
-    SharedModule,
-
+    SharedModule
   ]
 })
 export class HomeModule { }
