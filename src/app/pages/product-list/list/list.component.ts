@@ -1,4 +1,4 @@
-import { Component, Input, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 import { ListItem } from '../../../shared/interfaces/list-item';
 import { NgbdSortableHeader, SortEvent } from '../../../shared/directives/sort-event.directive';
 import { ApiService } from '../../../shared/services/api.service';
@@ -13,6 +13,7 @@ import { ToastService } from '../../../shared/services/toast.service';
 export class ListComponent {
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
   @Input() listData!: ListItem[]
+  @Output() selection = new EventEmitter<ListItem>();
   showToast: boolean = false;
   toastContent = {
     header: 'Success',
@@ -24,8 +25,7 @@ export class ListComponent {
   }
 
   handleEditClick(item: ListItem) {
-
-    console.log(item)
+    this.selection.emit(item);
   }
 
   onSort({ column, direction }: SortEvent) {

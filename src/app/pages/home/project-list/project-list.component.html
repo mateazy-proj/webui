@@ -1,5 +1,5 @@
 <div class="d-flex flex-column gap-2">
-    @for(project of projects; track project.name){
+    <!--  @for(project of projects; track project.name){
     <div class="d-flex flex-row justify-content-between border border-dark-subtle p-2 rounded align-items-center">
         <div class="name">
             {{project.name}}
@@ -9,6 +9,21 @@
         </div>
         <div class="download">
             <button class="btn btn-outline-primary"><i class="bi bi-download"></i></button>
+        </div>
+    </div>
+    }@empty {
+    <div class="row">
+        <div class="col text-center">
+            Voce ainda nao possui projetos disponiveis, Carregue seus projetos para comecar
+        </div>
+    </div>
+    } -->
+    @if(projectData){
+    <app-upload-project [projectData]="projectData"></app-upload-project>
+    } @else {
+    <div class="row">
+        <div class="col text-center">
+            Voce ainda nao possui projetos disponiveis, Carregue seus projetos para comecar
         </div>
     </div>
     }

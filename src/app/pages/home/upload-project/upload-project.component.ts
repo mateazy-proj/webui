@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ListItem } from '../../../shared/interfaces/list-item';
+import { ListItem, projectData } from '../../../shared/interfaces/list-item';
 import { ApiService } from '../../../shared/services/api.service';
 import { ToastService } from '../../../shared/services/toast.service';
 
@@ -10,7 +10,8 @@ import { ToastService } from '../../../shared/services/toast.service';
   templateUrl: './upload-project.component.html',
   styleUrl: './upload-project.component.scss'
 })
-export class UploadProjectComponent {
+export class UploadProjectComponent implements OnChanges {
+  @Input() projectData!: projectData
   public itemForm!: FormGroup;
   public list: ListItem[] = []
   constructor(
@@ -23,23 +24,28 @@ export class UploadProjectComponent {
     if (data) {
       this.triggerFileUpload(data)
     }
-    this.createFormGroup()
-    this.api.getList().subscribe({
-      next: (res) => {
-        this.list = res
-      },
-      error: (err) => {
-        console.error(err)
-      }
-    })
+
+
   }
 
-  createFormGroup() {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.projectData) {
+      console.log(this.projectData)
+      this.createFormGroup(this.projectData)
+      this.list = this.projectData.materials
+    }
+  }
+
+  handleSelectedItem(item: ListItem) {
+    console.log(item)
+  }
+
+  createFormGroup(projectData: projectData) {
     this.itemForm = this.formBuilder.group({
-      type: ['', Validators.required],
-      title: ['', Validators.required],
-      address: ['', [Validators.required]],
-      client: ['', [Validators.required]],
+      type: [projectData.projectType || '', Validators.required],
+      title: [projectData.title || '', Validators.required],
+      address: [projectData.address || '', [Validators.required]],
+      client: [projectData.name || '', [Validators.required]],
       addNew: ['']
     });
   }

@@ -1,5 +1,8 @@
 <app-page-header [pageTitle]="title" [buttonOptions]="buttonOptions" (eventHandler)="eventHandler()"></app-page-header>
-<router-outlet></router-outlet>
+<!-- calling the project list locked for now, afterwards it`ll be changed to use route outlet -->
+<app-project-list [projectData]="projectData"></app-project-list>
+
+<!-- <router-outlet /> -->
 
 <div class="visually-hidden">
     <input type="file" [accept]="fileTypes" (change)="onFileChange($event)" #file>

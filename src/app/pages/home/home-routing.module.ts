@@ -12,11 +12,11 @@ const routes: Routes = [
             {
                 path: 'project-list',
                 component: ProjectListComponent,
-            },
+            }/* ,
             {
                 path: 'upload-project',
                 component: UploadProjectComponent,
-            }
+            } */
         ]
     }
 ];

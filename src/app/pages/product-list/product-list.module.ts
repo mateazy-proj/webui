@@ -11,7 +11,6 @@ import { ProductListRoutingModule } from './product-list-routing.module';
 
 @NgModule({
   declarations: [
-    ViewComponent,
     SearchComponent,
     ProductListComponent,
   ],

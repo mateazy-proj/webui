@@ -36,7 +36,15 @@
         </div>
     </div>
     <div class="row">
-        <app-product-list-list [listData]="list"></app-product-list-list>
+        <div class="row">
+            <div class="col">
+                <app-product-list-list [listData]="list"
+                    (selection)="handleSelectedItem($event)"></app-product-list-list>
+            </div>
+            <!-- <div class="col-4">
+                <app-product-list-view></app-product-list-view>
+            </div> -->
+        </div>
     </div>
     <div class="row ">
         <!-- <div class="col">
@@ -48,7 +56,7 @@
             </div>
         </div> -->
         <div class="col d-flex justify-content-end">
-            <button class="btn btn-primary" type="submit">Avançar</button>
+            <button class="btn btn-primary" type="submit">Salvar Dados</button>
         </div>
     </div>
 

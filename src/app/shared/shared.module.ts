@@ -12,6 +12,7 @@ import { NgbdSortableHeader } from './directives/sort-event.directive';
 import { ListComponent } from '../pages/product-list/list/list.component';
 import { ToastService } from './services/toast.service';
 import { ToastComponent } from './components/toast/toast.component';
+import { ViewComponent } from '../pages/product-list/view/view.component';
 
 
 
@@ -21,6 +22,7 @@ import { ToastComponent } from './components/toast/toast.component';
     WrapperComponent,
     NavbarComponent,
     ListComponent,
+    ViewComponent,
     ToastComponent,
     NgbdSortableHeader
   ],
@@ -36,6 +38,7 @@ import { ToastComponent } from './components/toast/toast.component';
     NavbarComponent,
     ListComponent,
     ToastComponent,
+    ViewComponent,
     ReactiveFormsModule,
     HttpClientModule,
     NgbdSortableHeader,

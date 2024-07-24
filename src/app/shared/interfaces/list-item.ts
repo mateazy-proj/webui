@@ -1,5 +1,13 @@
+export interface projectData {
+    title: string,
+    name: string,
+    address: string,
+    projectType: string,
+    materials: ListItem[]
+}
+
 export interface ListItem {
-    image: string;
+    imageUrl: string;
     description: string;
     quantity: string;
 }

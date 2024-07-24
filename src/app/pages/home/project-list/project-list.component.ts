@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Project } from '../../../shared/interfaces/project';
+import { projectData } from '../../../shared/interfaces/list-item';
 
 @Component({
   selector: 'app-project-list',
@@ -7,24 +8,6 @@ import { Project } from '../../../shared/interfaces/project';
   styleUrl: './project-list.component.scss'
 })
 export class ProjectListComponent {
-  projects: Project[] = [
-    {
-      name: 'Project 1',
-      description: 'This is a project description',
-      image: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-      link: 'XXXXXXXXXXXXXXXXXXXXXX'
-    },
-    {
-      name: 'Project 2',
-      description: 'This is a project description',
-      image: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-      link: 'XXXXXXXXXXXXXXXXXXXXXX'
-    },
-    {
-      name: 'Project 3',
-      description: 'This is a project description',
-      image: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
-      link: 'XXXXXXXXXXXXXXXXXXXXXX'
-    }
-  ]
+  @Input() projectData!: projectData
+  projects: Project[] = []
 }

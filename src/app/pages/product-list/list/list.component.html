@@ -1,6 +1,6 @@
 <table class="table table-striped">
     <thead>
-        <th class="user-select-none" style="width: 2em" scope="col">EDIT</th>
+
         <th class="user-select-none" style="width: 140px" scope="col" sortable="image" (sort)="onSort($event)">IMAGEM
         </th>
         <th class="user-select-none" scope="col" sortable="description" (sort)="onSort($event)">DESCRIÇÃO</th>
@@ -10,14 +10,10 @@
     <tbody>
         @for(item of listData; track item.description){
         <tr>
-            <td>
-                <button class="btn btn-primary" (click)="handleEditClick(item)">
-                    <i class="bi bi-pencil-square"></i>
-                </button>
-            </td>
 
-            @if(item.image){ <td style="text-align: center;">
-                <img [src]="item.image" style="height: 50px;" class=" rounded img-fluid" [alt]="item.description">
+
+            @if(item.imageUrl){ <td style="text-align: center;">
+                <img [src]="item.imageUrl" style="height: 50px;" class=" rounded img-fluid" [alt]="item.description">
             </td>
             } @else {
             <td style="text-align: center;" id="drop-area">
