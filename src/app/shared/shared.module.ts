@@ -13,6 +13,8 @@ import { ListComponent } from '../pages/product-list/list/list.component';
 import { ToastService } from './services/toast.service';
 import { ToastComponent } from './components/toast/toast.component';
 import { ViewComponent } from '../pages/product-list/view/view.component';
+import { ImageCropperComponent } from 'ngx-image-cropper';
+import { CloudinaryModule } from '@cloudinary/ng';
 
 
 
@@ -21,27 +23,31 @@ import { ViewComponent } from '../pages/product-list/view/view.component';
     PageHeaderComponent,
     WrapperComponent,
     NavbarComponent,
-    ListComponent,
     ViewComponent,
     ToastComponent,
+    ListComponent,
     NgbdSortableHeader
   ],
   imports: [
     RouterModule,
     CommonModule,
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CloudinaryModule,
+    ImageCropperComponent,
   ],
   exports: [
     PageHeaderComponent,
     WrapperComponent,
     NavbarComponent,
-    ListComponent,
     ToastComponent,
     ViewComponent,
+    ListComponent,
     ReactiveFormsModule,
     HttpClientModule,
+    CloudinaryModule,
     NgbdSortableHeader,
+    ImageCropperComponent,
   ],
   providers: [
     ApiService,

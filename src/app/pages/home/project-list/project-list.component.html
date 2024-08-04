@@ -19,7 +19,7 @@
     </div>
     } -->
     @if(projectData){
-    <app-upload-project [projectData]="projectData"></app-upload-project>
+    <app-upload-project [projectData]="projectData" (updateItem)="listUpdateHandler($event)"></app-upload-project>
     } @else {
     <div class="row">
         <div class="col text-center">

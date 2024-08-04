@@ -9,15 +9,15 @@ export class ToastService {
 
   showDefault(header: string, body: string) {
     this.toasts.push({ header, body });
-    console.log(this.toasts)
+    //console.log(this.toasts)
   }
   showSuccess(header: string, body: string) {
     this.toasts.push({ header, body, classname: 'bg-success text-light' });
-    console.log(this.toasts)
+    //console.log(this.toasts)
   }
   showError(header: string, body: string) {
     this.toasts.push({ header, body, classname: 'bg-danger text-light' });
-    console.log(this.toasts)
+    //console.log(this.toasts)
   }
   remove(toast: Toast) {
     this.toasts = this.toasts.filter(t => t != toast);

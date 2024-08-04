@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { ListItem, projectData } from '../interfaces/list-item';
 import { SortColumn, SortDirection } from '../directives/sort-event.directive';
 import { environment } from '../../../environments/environment.development';
+import { CloudinaryImage } from '@cloudinary/url-gen';
 const data = {
   "title": "CASA DP",
   "name": "PATRÍCIA FERNANDA FERREIRA DOS SANTOS",
@@ -693,8 +694,9 @@ const data = {
 })
 export class ApiService {
 
-
-  constructor(private http: HttpClient) { }
+  cloudName = "dzgzu19lj"
+  cloudinary_url = `https://api.cloudinary.com/v1_1/${this.cloudName}/upload`
+  constructor(private http: HttpClient, private cloudinary: CloudinaryImage) { }
 
   getList(): Observable<ListItem[]> {
     return this.http.get<ListItem[]>('assets/items.json')
@@ -708,6 +710,12 @@ export class ApiService {
     return of<projectData>(data)
   }
 
+  uploadimage(file: File): Observable<any> {
+    const fd = new FormData();
+    fd.append('upload_presety', 'ml_default'),
+      fd.append('file', file)
+    return this.cloudinary.up
+  }
 
 
 }

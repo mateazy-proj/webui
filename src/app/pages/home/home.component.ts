@@ -2,8 +2,9 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { PageHeaderButton } from '../../shared/interfaces/page-header-button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../shared/services/api.service';
-import { projectData } from '../../shared/interfaces/list-item';
+import { ListItem, projectData } from '../../shared/interfaces/list-item';
 import { ToastService } from '../../shared/services/toast.service';
+import * as _ from 'lodash'
 
 @Component({
   selector: 'app-home',
@@ -16,7 +17,8 @@ export class HomeComponent {
   public buttonOptions: PageHeaderButton = {
     display: true,
     title: "Carregar projeto",
-    icon: 'bi-upload'
+    icon: 'bi-upload',
+    eventType: 'file'
   };
   fileTypes = '.csv';
   public projectData!: projectData
@@ -32,8 +34,27 @@ export class HomeComponent {
     })
 
   }
+
   eventHandler() {
-    this.fileInput?.nativeElement?.click();
+    switch (this.buttonOptions.eventType) {
+      case 'file':
+        this.fileInput?.nativeElement?.click();
+        break;
+      case 'action':
+        console.log(this.projectData)
+        break;
+    }
+
+  }
+
+  listUpdateHandler(event: ListItem) {
+    console.log(event)
+    let list = this.projectData.materials
+
+    const index = _.findIndex(list, { description: event.description });
+    _.set(list, `[${index}]`, event);
+
+    this.projectData.materials = list
   }
 
   onFileChange(event: any) {
@@ -52,7 +73,8 @@ export class HomeComponent {
       this.buttonOptions = {
         display: true,
         title: "Carregar projeto",
-        icon: 'bi-upload'
+        icon: 'bi-upload',
+        eventType: 'file'
       };
     } else if (route === '/home/upload-project') {
       this.title = "Dados do projeto";
@@ -61,6 +83,7 @@ export class HomeComponent {
       };
     }
   }
+
 
   navigateToUploadProject(data: any) {
     this.router.navigate(['/home/upload-project'], { state: { data: data } });
@@ -71,8 +94,14 @@ export class HomeComponent {
     this.toastService.showDefault("Em progresso", "Enviando arquivo")
     this.apiService.postFile(file).subscribe({
       next: (data) => {
-        console.log(data)
+        //console.log(data)
         this.projectData = data
+        this.buttonOptions = {
+          display: true,
+          title: "Salvar e gerar relatrorio",
+          icon: 'bi-save2',
+          eventType: 'action'
+        };
         this.toastService.clear()
         this.toastService.showSuccess("Sucesso", "Arquivo enviado com sucesso")
       }, error: (err) => {

@@ -1,6 +1,6 @@
 <app-page-header [pageTitle]="title" [buttonOptions]="buttonOptions" (eventHandler)="eventHandler()"></app-page-header>
 <!-- calling the project list locked for now, afterwards it`ll be changed to use route outlet -->
-<app-project-list [projectData]="projectData"></app-project-list>
+<app-project-list [projectData]="projectData" (updateItem)="listUpdateHandler($event)"></app-project-list>
 
 <!-- <router-outlet /> -->
 

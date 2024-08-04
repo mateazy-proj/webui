@@ -15,7 +15,7 @@ td {
     vertical-align: middle;
 }
 
-#drop-area {
+.drop-area {
     border: 2px dashed #ccc;
     text-align: center;
     /* Center text vertically */
@@ -24,7 +24,7 @@ td {
     color: #666;
 }
 
-#drop-area.highlight {
+.drop-area.highlight {
     background-color: #f0f0f0;
     /* Example: Highlight color */
 }

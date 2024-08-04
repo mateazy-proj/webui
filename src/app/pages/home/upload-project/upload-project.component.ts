@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ListItem, projectData } from '../../../shared/interfaces/list-item';
@@ -12,6 +12,7 @@ import { ToastService } from '../../../shared/services/toast.service';
 })
 export class UploadProjectComponent implements OnChanges {
   @Input() projectData!: projectData
+  @Output() updateItem: EventEmitter<ListItem> = new EventEmitter<ListItem>();
   public itemForm!: FormGroup;
   public list: ListItem[] = []
   constructor(
@@ -28,16 +29,22 @@ export class UploadProjectComponent implements OnChanges {
 
   }
 
+
+  listUpdateHandler(event: ListItem) {
+    console.log(event)
+    this.updateItem.emit(event)
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (this.projectData) {
-      console.log(this.projectData)
+      //console.log(this.projectData)
       this.createFormGroup(this.projectData)
       this.list = this.projectData.materials
     }
   }
 
   handleSelectedItem(item: ListItem) {
-    console.log(item)
+    //console.log(item)
   }
 
   createFormGroup(projectData: projectData) {
@@ -51,12 +58,12 @@ export class UploadProjectComponent implements OnChanges {
   }
 
   submit() {
-    console.log(this.itemForm.value)
+    //console.log(this.itemForm.value)
     this.toastService.showDefault('Sucesso', 'Cadastro realizado com sucesso')
   }
 
   triggerFileUpload(data: FormData) {
-    console.log(data)
+    //console.log(data)
 
   }
 }

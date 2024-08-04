@@ -2,8 +2,9 @@ import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from 
 import { ListItem } from '../../../shared/interfaces/list-item';
 import { NgbdSortableHeader, SortEvent } from '../../../shared/directives/sort-event.directive';
 import { ApiService } from '../../../shared/services/api.service';
-import * as _ from "lodash"
 import { ToastService } from '../../../shared/services/toast.service';
+import * as _ from 'lodash';
+import { ImageCropperService } from '../../../shared/services/image-cropper.service';
 
 @Component({
   selector: 'app-product-list-list',
@@ -13,15 +14,16 @@ import { ToastService } from '../../../shared/services/toast.service';
 export class ListComponent {
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
   @Input() listData!: ListItem[]
-  @Output() selection = new EventEmitter<ListItem>();
+  @Output() selection: EventEmitter<ListItem> = new EventEmitter<ListItem>();
+  @Output() updateItem: EventEmitter<ListItem> = new EventEmitter<ListItem>();
   showToast: boolean = false;
-  toastContent = {
-    header: 'Success',
-    body: 'Product added successfully'
-  }
+  imageChangedEvent: Event | null = null;
+  /* List of image types to be accepted on the application */
+  acceptedImageType = ['image/jpeg', 'image/png', 'image/webp', 'image/bmp', 'image/tiff']
 
-  constructor(private api: ApiService, private toastService: ToastService) {
+  selectedItem!: ListItem
 
+  constructor(private api: ApiService, private toastService: ToastService, private imageCropService: ImageCropperService) {
   }
 
   handleEditClick(item: ListItem) {
@@ -58,36 +60,32 @@ export class ListComponent {
     document.getElementById('drop-area')?.classList.remove('highlight');
   }
 
-  onDrop(event: DragEvent) {
+  onDrop(event: DragEvent, item: ListItem) {
     event.preventDefault();
     event.stopPropagation();
-    // Optional: Remove visual feedback for user
     document.getElementById('drop-area')?.classList.remove('highlight');
 
-    const files = event.dataTransfer?.files;
-    if (files) {
-      this.handleFiles(files);
+    const file = event.dataTransfer?.files[0];
+    if (file && this.acceptedImageType.includes(file.type)) {
+      this.toastService.showSuccess('Sucesso', 'Imagem carregada');
+      this.selectedItem = item
+      this.imageCropService.resize(file).then(image => {
+        this.replaceItem(image)
+      });
+    } else {
+      this.toastService.showError('Erro ao carregar arquivo', 'Apenas imagens serão processadas');
     }
 
   }
 
-  handleFiles(files: FileList) {
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      // Example: Perform file upload or processing
-      console.log('File dropped:', file.name, file.type);
-      if (file.type !== 'text/csv') {
-        this.toastContent = {
-          header: 'Erro ao carregar arquivo',
-          body: 'Apenas arquivos CSV serao processados'
-        }
-        this.toastService.showError(this.toastContent.header, this.toastContent.body);
-        console.log(`nao`)
-      } else {
-        this.toastService.showSuccess(this.toastContent.header, this.toastContent.body);
-      }
-    }
-  }
 
+
+  replaceItem(image: any) {
+
+    this.selectedItem.imageUrl = image
+    this.updateItem.emit(this.selectedItem)
+  }
 
 }
+
+

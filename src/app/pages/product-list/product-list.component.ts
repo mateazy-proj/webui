@@ -26,7 +26,7 @@ export class ProductListComponent {
         this.list = res
       },
       error: (err) => {
-        console.error(err)
+        //console.error(err)
       }
     })
   }
