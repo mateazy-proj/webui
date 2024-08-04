@@ -86,6 +86,14 @@ export class ListComponent {
     this.updateItem.emit(this.selectedItem)
   }
 
+  updateImageOnCloudinary(image: any) {
+    let data = new FormData
+    data.append('file', image);
+    data.append('upload_preset', 'Upload presets name here');
+    data.append('cloud_name', 'copy from dashboard')
+    data.append('public_id', file Name + todaysDate)
+  }
+
 }
 
 

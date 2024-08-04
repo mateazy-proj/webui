@@ -712,10 +712,20 @@ export class ApiService {
 
   uploadimage(file: File): Observable<any> {
     const fd = new FormData();
-    fd.append('upload_presety', 'ml_default'),
-      fd.append('file', file)
-    return this.cloudinary.up
+    const publicId = file.name + this.getFormattedDate()
+    fd.append('upload_presety', 'ml_default');
+    fd.append('file', file);
+    fd.append('cloud_name', 'copy from dashboard');
+    fd.append('public_id', publicId);
+    return this.http.post(this.cloudinary_url, fd)
   }
+  private getFormattedDate(): string {
+    const today = new Date();
+    const day = today.getDate().toString().padStart(2, '0');
+    const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
+    const year = today.getFullYear();
 
+    return `${day}-${month}-${year}`;
+  }
 
 }

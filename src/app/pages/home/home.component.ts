@@ -64,6 +64,8 @@ export class HomeComponent {
     }
   }
 
+
+
   /**
    * Methos should change this.title and this.buttonOptions according to path
    */
