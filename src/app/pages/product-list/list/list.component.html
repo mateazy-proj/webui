@@ -16,18 +16,8 @@
                 <img [src]="item.imageUrl" style="height: 50px;" class=" rounded img-fluid" [alt]="item.description">
             </td>
             } @else {
-            <td style="text-align: center;" class="drop-area">
-                <div class="d-flex align-items-center justify-content-center" (dragover)="onDragOver($event)"
-                    (dragenter)="onDragEnter($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event, item)">
-
-                    <i class="bi bi-cloud-upload"></i>
-
-                    <div class="flex-shrink-1">
-
-                        Araste uma imagem
-                    </div>
-                </div>
-            </td>
+            <app-img-uploader-cell [item]="item" (selectedItem)="setSelectedItem($event)"
+                (imageFile)="postFileToCloudinary($event)"></app-img-uploader-cell>
             }
 
 

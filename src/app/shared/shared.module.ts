@@ -14,8 +14,8 @@ import { ToastService } from './services/toast.service';
 import { ToastComponent } from './components/toast/toast.component';
 import { ViewComponent } from '../pages/product-list/view/view.component';
 import { ImageCropperComponent } from 'ngx-image-cropper';
-import { CloudinaryModule } from '@cloudinary/ng';
-
+import { ImageCropperService } from './services/image-cropper.service';
+import { ImgUploaderCellComponent } from '../pages/product-list/list/img-uploader-cell/img-uploader-cell.component';
 
 
 @NgModule({
@@ -26,6 +26,7 @@ import { CloudinaryModule } from '@cloudinary/ng';
     ViewComponent,
     ToastComponent,
     ListComponent,
+    ImgUploaderCellComponent,
     NgbdSortableHeader
   ],
   imports: [
@@ -33,7 +34,6 @@ import { CloudinaryModule } from '@cloudinary/ng';
     CommonModule,
     NgbModule,
     ReactiveFormsModule,
-    CloudinaryModule,
     ImageCropperComponent,
   ],
   exports: [
@@ -45,13 +45,14 @@ import { CloudinaryModule } from '@cloudinary/ng';
     ListComponent,
     ReactiveFormsModule,
     HttpClientModule,
-    CloudinaryModule,
     NgbdSortableHeader,
     ImageCropperComponent,
+    ImgUploaderCellComponent,
   ],
   providers: [
     ApiService,
-    ToastService
+    ToastService,
+    ImageCropperService
   ]
 })
 export class SharedModule { }

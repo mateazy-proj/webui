@@ -4,7 +4,6 @@ import { Observable, of } from 'rxjs';
 import { ListItem, projectData } from '../interfaces/list-item';
 import { SortColumn, SortDirection } from '../directives/sort-event.directive';
 import { environment } from '../../../environments/environment.development';
-import { CloudinaryImage } from '@cloudinary/url-gen';
 const data = {
   "title": "CASA DP",
   "name": "PATRÍCIA FERNANDA FERREIRA DOS SANTOS",
@@ -695,8 +694,8 @@ const data = {
 export class ApiService {
 
   cloudName = "dzgzu19lj"
-  cloudinary_url = `https://api.cloudinary.com/v1_1/${this.cloudName}/upload`
-  constructor(private http: HttpClient, private cloudinary: CloudinaryImage) { }
+  cloudinary_url = `https://api.cloudinary.com/v1_1/${this.cloudName}/auto/upload`
+  constructor(private http: HttpClient) { }
 
   getList(): Observable<ListItem[]> {
     return this.http.get<ListItem[]>('assets/items.json')
@@ -713,19 +712,24 @@ export class ApiService {
   uploadimage(file: File): Observable<any> {
     const fd = new FormData();
     const publicId = file.name + this.getFormattedDate()
-    fd.append('upload_presety', 'ml_default');
+    fd.append('upload_preset', 'tt7nx1qw');
     fd.append('file', file);
-    fd.append('cloud_name', 'copy from dashboard');
+    fd.append('cloud_name', this.cloudName);
     fd.append('public_id', publicId);
     return this.http.post(this.cloudinary_url, fd)
+
   }
   private getFormattedDate(): string {
     const today = new Date();
     const day = today.getDate().toString().padStart(2, '0');
     const month = (today.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
     const year = today.getFullYear();
+    const hours = today.getHours()
+    const minutes = today.getMinutes()
+    const seconds = today.getSeconds()
 
-    return `${day}-${month}-${year}`;
+
+    return `${day}${month}${year}${hours}${minutes}${seconds}`;
   }
 
 }

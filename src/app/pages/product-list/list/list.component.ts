@@ -17,13 +17,11 @@ export class ListComponent {
   @Output() selection: EventEmitter<ListItem> = new EventEmitter<ListItem>();
   @Output() updateItem: EventEmitter<ListItem> = new EventEmitter<ListItem>();
   showToast: boolean = false;
-  imageChangedEvent: Event | null = null;
-  /* List of image types to be accepted on the application */
-  acceptedImageType = ['image/jpeg', 'image/png', 'image/webp', 'image/bmp', 'image/tiff']
+
 
   selectedItem!: ListItem
 
-  constructor(private api: ApiService, private toastService: ToastService, private imageCropService: ImageCropperService) {
+  constructor(private api: ApiService, private toastService: ToastService) {
   }
 
   handleEditClick(item: ListItem) {
@@ -41,44 +39,27 @@ export class ListComponent {
     this.listData = _.orderBy(this.listData, column, newDir)
   }
 
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
+  setSelectedItem(event: ListItem) {
+    this.selectedItem = event
   }
 
-  onDragEnter(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    // Optional: Add visual feedback for user
-    document.getElementById('drop-area')?.classList.add('highlight');
-  }
-
-  onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    // Optional: Remove visual feedback for user
-    document.getElementById('drop-area')?.classList.remove('highlight');
-  }
-
-  onDrop(event: DragEvent, item: ListItem) {
-    event.preventDefault();
-    event.stopPropagation();
-    document.getElementById('drop-area')?.classList.remove('highlight');
-
-    const file = event.dataTransfer?.files[0];
-    if (file && this.acceptedImageType.includes(file.type)) {
-      this.toastService.showSuccess('Sucesso', 'Imagem carregada');
-      this.selectedItem = item
-      this.imageCropService.resize(file).then(image => {
-        this.replaceItem(image)
-      });
-    } else {
-      this.toastService.showError('Erro ao carregar arquivo', 'Apenas imagens serão processadas');
-    }
-
+  postFileToCloudinary(file: File) {
+    console.log(`called `, file.name)
+    this.api.uploadimage(file).subscribe({
+      next: (res) => {
+        //console.log(res.url)
+        this.replaceItem(res.url)
+      },
+      error: (err) => {
+        console.log(err)
+      },
+    })
   }
 
 
+  /* // Example usage
+  const base64Image = 'data:image/png;base64,iVBORw0...'; // Your base64 string here
+  const blob = base64ToBlob(base64Image, 'image/png'); */
 
   replaceItem(image: any) {
 
@@ -86,13 +67,6 @@ export class ListComponent {
     this.updateItem.emit(this.selectedItem)
   }
 
-  updateImageOnCloudinary(image: any) {
-    let data = new FormData
-    data.append('file', image);
-    data.append('upload_preset', 'Upload presets name here');
-    data.append('cloud_name', 'copy from dashboard')
-    data.append('public_id', file Name + todaysDate)
-  }
 
 }
 
