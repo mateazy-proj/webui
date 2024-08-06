@@ -8,7 +8,6 @@ import { ToastService } from '../../services/toast.service';
 })
 export class ToastComponent {
   constructor(public toastService: ToastService) {
-    console.log(this.toastService.toasts);
 
   }
 }

@@ -5,6 +5,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { ListItem, projectData } from '../../shared/interfaces/list-item';
 import { ToastService } from '../../shared/services/toast.service';
 import * as _ from 'lodash'
+import { ImageList } from '../../shared/interfaces/image-list';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,7 @@ export class HomeComponent {
   };
   fileTypes = '.csv';
   public projectData!: projectData
-
+  private imageList!: ImageList[]
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -35,20 +36,23 @@ export class HomeComponent {
 
   }
 
+  updateImageList(event: ImageList[]) {
+    this.imageList = event
+    console.log(this.imageList)
+  }
+
   eventHandler() {
     switch (this.buttonOptions.eventType) {
       case 'file':
         this.fileInput?.nativeElement?.click();
         break;
       case 'action':
-        console.log(this.projectData)
         break;
     }
 
   }
 
   listUpdateHandler(event: ListItem) {
-    console.log(event)
     let list = this.projectData.materials
 
     const index = _.findIndex(list, { description: event.description });

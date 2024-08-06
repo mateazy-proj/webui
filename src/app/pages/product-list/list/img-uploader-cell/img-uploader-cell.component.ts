@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ImageCropperService } from '../../../../shared/services/image-cropper.service';
 import { ListItem } from '../../../../shared/interfaces/list-item';
 import { ToastService } from '../../../../shared/services/toast.service';
@@ -6,9 +6,11 @@ import { ToastService } from '../../../../shared/services/toast.service';
 @Component({
   selector: 'app-img-uploader-cell',
   templateUrl: './img-uploader-cell.component.html',
-  styleUrl: './img-uploader-cell.component.scss'
+  styleUrl: './img-uploader-cell.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImgUploaderCellComponent {
+  @ViewChild('dropArea') dropArea!: ElementRef
   @Input() item!: ListItem
   @Output() selectedItem: EventEmitter<ListItem> = new EventEmitter<ListItem>()
   @Output() imageFile: EventEmitter<File> = new EventEmitter<File>()
@@ -28,21 +30,20 @@ export class ImgUploaderCellComponent {
     event.preventDefault();
     event.stopPropagation();
     // Optional: Add visual feedback for user
-    document.getElementById('drop-area')?.classList.add('highlight');
+    this.dropArea.nativeElement.classList.add('bg-primary-subtle')
   }
 
   onDragLeave(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
     // Optional: Remove visual feedback for user
-    document.getElementById('drop-area')?.classList.remove('highlight');
+    this.dropArea.nativeElement.classList.remove('bg-primary-subtle')
   }
 
   onDrop(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
-    document.getElementById('drop-area')?.classList.remove('highlight');
-
+    this.dropArea.nativeElement.classList.remove('bg-primary-subtle')
     const file = event.dataTransfer?.files[0];
     if (file && this.acceptedImageType.includes(file.type)) {
       this.toastService.showSuccess('Sucesso', 'Imagem carregada');

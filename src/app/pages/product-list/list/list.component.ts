@@ -5,6 +5,7 @@ import { ApiService } from '../../../shared/services/api.service';
 import { ToastService } from '../../../shared/services/toast.service';
 import * as _ from 'lodash';
 import { ImageCropperService } from '../../../shared/services/image-cropper.service';
+import { ImageList } from '../../../shared/interfaces/image-list';
 
 @Component({
   selector: 'app-product-list-list',
@@ -16,12 +17,14 @@ export class ListComponent {
   @Input() listData!: ListItem[]
   @Output() selection: EventEmitter<ListItem> = new EventEmitter<ListItem>();
   @Output() updateItem: EventEmitter<ListItem> = new EventEmitter<ListItem>();
+  @Output() imageListChange: EventEmitter<ImageList[]> = new EventEmitter<ImageList[]>()
   showToast: boolean = false;
+  imageList!: ImageList[]
 
 
   selectedItem!: ListItem
 
-  constructor(private api: ApiService, private toastService: ToastService) {
+  constructor(private imageCropperService: ImageCropperService) {
   }
 
   handleEditClick(item: ListItem) {
@@ -43,9 +46,30 @@ export class ListComponent {
     this.selectedItem = event
   }
 
+  addFileToList(file: File) {
+    const list: ImageList = {
+      imageFile: file,
+      itemName: this.selectedItem.description
+    }
+
+    if (!_.some(this.imageList, { itemName: list.itemName })) {
+      this.imageList.push(list);
+    } else {
+      const index = _.findIndex(this.imageList, { itemName: list.itemName });
+
+      // Update the item
+      if (index !== -1) {
+        this.imageList[index].imageFile = file;
+      }
+    }
+
+    this.imageListChange.emit(this.imageList)
+  }
+
   postFileToCloudinary(file: File) {
-    console.log(`called `, file.name)
-    this.api.uploadimage(file).subscribe({
+    this.replaceItem(file)
+    this.addFileToList(file)
+    /* this.api.uploadimage(file).subscribe({
       next: (res) => {
         //console.log(res.url)
         this.replaceItem(res.url)
@@ -53,7 +77,7 @@ export class ListComponent {
       error: (err) => {
         console.log(err)
       },
-    })
+    }) */
   }
 
 
@@ -61,11 +85,17 @@ export class ListComponent {
   const base64Image = 'data:image/png;base64,iVBORw0...'; // Your base64 string here
   const blob = base64ToBlob(base64Image, 'image/png'); */
 
-  replaceItem(image: any) {
+  replaceItem(file: File) {
+    this.imageCropperService.convertFileToDataURL(file).then(dataURL => {
+      this.selectedItem.imageUrl = dataURL;
+      this.updateItem.emit(this.selectedItem)
+    }).catch(error => {
+      console.error('Error converting file to Data URL:', error);
+    });
 
-    this.selectedItem.imageUrl = image
-    this.updateItem.emit(this.selectedItem)
+
   }
+
 
 
 }

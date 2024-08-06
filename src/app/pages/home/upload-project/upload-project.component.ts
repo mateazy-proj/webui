@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ListItem, projectData } from '../../../shared/interfaces/list-item';
 import { ApiService } from '../../../shared/services/api.service';
 import { ToastService } from '../../../shared/services/toast.service';
+import { ImageList } from '../../../shared/interfaces/image-list';
 
 @Component({
   selector: 'app-upload-project',
@@ -13,6 +14,8 @@ import { ToastService } from '../../../shared/services/toast.service';
 export class UploadProjectComponent implements OnChanges {
   @Input() projectData!: projectData
   @Output() updateItem: EventEmitter<ListItem> = new EventEmitter<ListItem>();
+
+  @Output() imageListChange: EventEmitter<ImageList[]> = new EventEmitter<ImageList[]>()
   public itemForm!: FormGroup;
   public list: ListItem[] = []
   constructor(
@@ -29,6 +32,9 @@ export class UploadProjectComponent implements OnChanges {
 
   }
 
+  updateImageList(event: ImageList[]) {
+    this.imageListChange.emit(event)
+  }
 
   listUpdateHandler(event: ListItem) {
     console.log(event)

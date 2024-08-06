@@ -12,13 +12,11 @@
         <tr>
 
 
-            @if(item.imageUrl){ <td style="text-align: center;">
-                <img [src]="item.imageUrl" style="height: 50px;" class=" rounded img-fluid" [alt]="item.description">
+            <td style="text-align: center;" class="p-0">
+                <app-img-uploader-cell [item]="item" (selectedItem)="setSelectedItem($event)"
+                    (imageFile)="postFileToCloudinary($event)"></app-img-uploader-cell>
             </td>
-            } @else {
-            <app-img-uploader-cell [item]="item" (selectedItem)="setSelectedItem($event)"
-                (imageFile)="postFileToCloudinary($event)"></app-img-uploader-cell>
-            }
+
 
 
             <td>

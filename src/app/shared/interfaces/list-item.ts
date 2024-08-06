@@ -7,7 +7,7 @@ export interface projectData {
 }
 
 export interface ListItem {
-    imageUrl: string;
+    imageUrl: string | File;
     description: string;
     quantity: string;
 }

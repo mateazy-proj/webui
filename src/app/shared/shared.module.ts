@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { PageHeaderComponent } from './components/page-header/page-header.component';
 import { WrapperComponent } from './components/wrapper/wrapper.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -52,7 +52,8 @@ import { ImgUploaderCellComponent } from '../pages/product-list/list/img-uploade
   providers: [
     ApiService,
     ToastService,
-    ImageCropperService
+    ImageCropperService,
+    DatePipe
   ]
 })
 export class SharedModule { }
