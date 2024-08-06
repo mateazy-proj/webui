@@ -1,4 +1,4 @@
 export interface ImageList {
-    imageFile: File;
+    imageFile: File | string;
     itemName: string;
 }

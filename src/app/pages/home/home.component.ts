@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { PageHeaderButton } from '../../shared/interfaces/page-header-button';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../shared/services/api.service';
@@ -28,7 +28,8 @@ export class HomeComponent {
   constructor(private router: Router,
     private route: ActivatedRoute,
     private apiService: ApiService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private dcRef: ChangeDetectorRef
   ) {
     this.router.events.subscribe((val) => {
       this.changePageHeader(this.router.url);
@@ -39,6 +40,7 @@ export class HomeComponent {
   updateImageList(event: ImageList[]) {
     this.imageList = event
     console.log(this.imageList)
+    this.dcRef.detectChanges()
   }
 
   eventHandler() {
@@ -59,6 +61,9 @@ export class HomeComponent {
     _.set(list, `[${index}]`, event);
 
     this.projectData.materials = list
+    this.projectData = _.cloneDeep(this.projectData)
+
+    this.dcRef.detectChanges()
   }
 
   onFileChange(event: any) {

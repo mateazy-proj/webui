@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ImageCropperService } from '../../../../shared/services/image-cropper.service';
 import { ListItem } from '../../../../shared/interfaces/list-item';
 import { ToastService } from '../../../../shared/services/toast.service';
@@ -18,7 +18,7 @@ export class ImgUploaderCellComponent {
   imageChangedEvent: Event | null = null;
   /* List of image types to be accepted on the application */
   acceptedImageType = ['image/jpeg', 'image/png', 'image/webp', 'image/bmp', 'image/tiff']
-  constructor(private imageCropService: ImageCropperService, private toastService: ToastService) {
+  constructor(private imageCropService: ImageCropperService, private toastService: ToastService, private cdRef: ChangeDetectorRef) {
 
   }
   onDragOver(event: DragEvent) {
@@ -52,6 +52,7 @@ export class ImgUploaderCellComponent {
         //this.replaceItem(image)
         this.selectedItem.emit(this.item)
         this.imageFile.emit(imgFile)
+        this.cdRef.detectChanges()
       });
     } else {
       this.toastService.showError('Erro ao carregar arquivo', 'Apenas imagens serão processadas');

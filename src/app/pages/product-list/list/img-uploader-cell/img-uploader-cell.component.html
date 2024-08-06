@@ -2,12 +2,9 @@
     (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
 
     @if(item.imageUrl){
-    <img [src]="item.imageUrl" style="height: 50px;" class=" rounded img-fluid" [alt]="item.description"
-        (dragover)="onDragOver($event)" (dragenter)="onDragEnter($event)" (dragleave)="onDragLeave($event)"
-        (drop)="onDrop($event)">
+    <img [src]="item.imageUrl" style="height: 50px;" class="rounded img-fluid no-drag" [alt]="item.description">
     }@else {
-    <div class="d-flex align-items-center justify-content-center" (dragover)="onDragOver($event)"
-        (dragenter)="onDragEnter($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
+    <div class="d-flex align-items-center justify-content-center no-drag">
         <i class="bi bi-cloud-upload"></i>
         <div class="flex-shrink-1">
             Araste uma imagem

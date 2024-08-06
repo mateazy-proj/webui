@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, QueryList, SimpleChanges, ViewChildren } from '@angular/core';
 import { ListItem } from '../../../shared/interfaces/list-item';
 import { NgbdSortableHeader, SortEvent } from '../../../shared/directives/sort-event.directive';
 import { ApiService } from '../../../shared/services/api.service';
@@ -12,19 +12,22 @@ import { ImageList } from '../../../shared/interfaces/image-list';
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
-export class ListComponent {
+export class ListComponent implements OnChanges {
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
   @Input() listData!: ListItem[]
   @Output() selection: EventEmitter<ListItem> = new EventEmitter<ListItem>();
   @Output() updateItem: EventEmitter<ListItem> = new EventEmitter<ListItem>();
   @Output() imageListChange: EventEmitter<ImageList[]> = new EventEmitter<ImageList[]>()
   showToast: boolean = false;
-  imageList!: ImageList[]
+  imageList: ImageList[] = []
 
 
   selectedItem!: ListItem
 
   constructor(private imageCropperService: ImageCropperService) {
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.listData)
   }
 
   handleEditClick(item: ListItem) {
@@ -47,28 +50,28 @@ export class ListComponent {
   }
 
   addFileToList(file: File) {
+    console.log(this.imageList)
     const list: ImageList = {
       imageFile: file,
       itemName: this.selectedItem.description
     }
+    console.log(list)
+    const index = _.findIndex(this.imageList, { itemName: list.itemName });
 
-    if (!_.some(this.imageList, { itemName: list.itemName })) {
-      this.imageList.push(list);
+    // Update the item
+    if (index !== -1) {
+      this.imageList[index].imageFile = file;
     } else {
-      const index = _.findIndex(this.imageList, { itemName: list.itemName });
-
-      // Update the item
-      if (index !== -1) {
-        this.imageList[index].imageFile = file;
-      }
+      this.imageList.push(list);
     }
 
-    this.imageListChange.emit(this.imageList)
+
+
   }
 
   postFileToCloudinary(file: File) {
     this.replaceItem(file)
-    this.addFileToList(file)
+
     /* this.api.uploadimage(file).subscribe({
       next: (res) => {
         //console.log(res.url)
@@ -88,7 +91,9 @@ export class ListComponent {
   replaceItem(file: File) {
     this.imageCropperService.convertFileToDataURL(file).then(dataURL => {
       this.selectedItem.imageUrl = dataURL;
+      this.addFileToList(file)
       this.updateItem.emit(this.selectedItem)
+      this.imageListChange.emit(this.imageList)
     }).catch(error => {
       console.error('Error converting file to Data URL:', error);
     });
