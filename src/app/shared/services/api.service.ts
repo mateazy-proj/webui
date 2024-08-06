@@ -710,7 +710,7 @@ export class ApiService {
     return of<projectData>(data)
   }
 
-  uploadimage(file: File): Observable<any> {
+  uploadImage(file: File): Observable<any> {
     const fd = new FormData();
     const publicId = file.name + this.getFormattedDate()
     fd.append('upload_preset', 'tt7nx1qw');

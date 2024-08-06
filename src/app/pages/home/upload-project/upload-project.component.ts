@@ -17,6 +17,7 @@ export class UploadProjectComponent implements OnChanges {
 
   @Output() imageListChange: EventEmitter<ImageList[]> = new EventEmitter<ImageList[]>()
   public itemForm!: FormGroup;
+
   public list: ListItem[] = []
   constructor(
     private router: Router,

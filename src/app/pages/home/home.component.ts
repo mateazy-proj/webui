@@ -6,6 +6,7 @@ import { ListItem, projectData } from '../../shared/interfaces/list-item';
 import { ToastService } from '../../shared/services/toast.service';
 import * as _ from 'lodash'
 import { ImageList } from '../../shared/interfaces/image-list';
+import { catchError, forkJoin, tap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,10 @@ export class HomeComponent {
   };
   fileTypes = '.csv';
   public projectData!: projectData
-  private imageList!: ImageList[]
+  private imageList: ImageList[] = []
+  completedCount: number = 0;
+  totalFiles: number = 0;
+  uploadStatus: string = '';
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -49,9 +53,52 @@ export class HomeComponent {
         this.fileInput?.nativeElement?.click();
         break;
       case 'action':
+        this.uploadImagesToCloudinary()
         break;
     }
 
+  }
+
+  uploadImagesToCloudinary() {
+    console.log('called upload to cloud')
+    this.totalFiles = this.imageList.length;
+    this.completedCount = 0
+    this.uploadStatus = 'Uploading...';
+
+    const uploadObservables = this.imageList.map(item => {
+      // Check if imageFile is a valid file object
+      if (typeof item.imageFile !== 'string') {
+        return this.apiService.uploadImage(item.imageFile).pipe(
+          tap(() => {
+            // Increment completedCount on successful upload
+            this.completedCount++;
+            // Update progress status
+            this.uploadStatus = `Uploaded ${this.completedCount} of ${this.totalFiles} files`;
+          }),
+          catchError(error => {
+            // Handle upload error
+            console.error('Upload failed', error);
+            this.uploadStatus = 'Upload failed';
+            // Continue processing other files
+            return [];
+          })
+        );
+      }
+      return [];
+    });
+
+    // Execute all upload observables in parallel
+    forkJoin(uploadObservables).subscribe({
+      next: () => {
+        if (this.completedCount === this.totalFiles) {
+          this.uploadStatus = 'Upload complete';
+        }
+      },
+      error: (err) => {
+        console.error('An error occurred during uploads', err);
+        this.uploadStatus = 'Upload failed';
+      }
+    });
   }
 
   listUpdateHandler(event: ListItem) {
