@@ -7,6 +7,7 @@ import { ToastService } from '../../shared/services/toast.service';
 import * as _ from 'lodash'
 import { ImageList } from '../../shared/interfaces/image-list';
 import { catchError, forkJoin, tap } from 'rxjs';
+import { uploadingData } from './project-list/project-list.component';
 
 @Component({
   selector: 'app-home',
@@ -25,9 +26,11 @@ export class HomeComponent {
   fileTypes = '.csv';
   public projectData!: projectData
   private imageList: ImageList[] = []
-  completedCount: number = 0;
-  totalFiles: number = 0;
-  uploadStatus: string = '';
+  uploader: uploadingData = {
+    total: 10,
+    current: 10,
+    isUploading: false
+  }
 
   constructor(private router: Router,
     private route: ActivatedRoute,
@@ -53,17 +56,47 @@ export class HomeComponent {
         this.fileInput?.nativeElement?.click();
         break;
       case 'action':
-        this.uploadImagesToCloudinary()
+        this.checkForMissingImagesBeforeUpload()
+        break;
+      case 'clear':
+        this.clearData()
         break;
     }
 
   }
 
+  clearData() {
+    this.setTitleToProjects()
+    this.uploader.isUploading = false
+    this.projectData = {
+      title: "",
+      name: "",
+      address: "",
+      projectType: "",
+      materials: []
+    }
+
+  }
+
+  checkForMissingImagesBeforeUpload() {
+    /* possibly add some logic to check if any items are missing */
+    let ammountMissing = this.projectData.materials.filter(item => item.imageUrl === "")
+    if (ammountMissing.length > 0) {
+      this.toastService.showError("AVISO! Imagens faltando", `Existem ${ammountMissing.length} itens sem imagem.`)
+    }
+    this.uploadImagesToCloudinary()
+
+  }
+
   uploadImagesToCloudinary() {
     console.log('called upload to cloud')
-    this.totalFiles = this.imageList.length;
-    this.completedCount = 0
-    this.uploadStatus = 'Uploading...';
+    this.uploader.total = this.imageList.length;
+    this.uploader.current = 0
+    this.uploader.isUploading = true
+    this.title = 'Enviando arquivos';
+    this.buttonOptions = { display: false }
+
+    console.log(this.imageList)
 
     const uploadObservables = this.imageList.map(item => {
       // Check if imageFile is a valid file object
@@ -71,14 +104,13 @@ export class HomeComponent {
         return this.apiService.uploadImage(item.imageFile).pipe(
           tap(() => {
             // Increment completedCount on successful upload
-            this.completedCount++;
+            this.uploader.current++;
             // Update progress status
-            this.uploadStatus = `Uploaded ${this.completedCount} of ${this.totalFiles} files`;
           }),
           catchError(error => {
             // Handle upload error
             console.error('Upload failed', error);
-            this.uploadStatus = 'Upload failed';
+            this.uploader.isUploading = false
             // Continue processing other files
             return [];
           })
@@ -88,18 +120,45 @@ export class HomeComponent {
     });
 
     // Execute all upload observables in parallel
+
     forkJoin(uploadObservables).subscribe({
-      next: () => {
-        if (this.completedCount === this.totalFiles) {
-          this.uploadStatus = 'Upload complete';
+      next: (res) => {
+        console.log(res)
+        this.updateImageURLFromAPICall(res)
+        if (this.uploader.current === this.uploader.total) {
+          console.log(this.imageList)
+
+          this.title = "Upload completo";
+          this.buttonOptions = {
+            display: true,
+            title: "Carregar outro projeto",
+            eventType: 'file'
+          };
         }
       },
       error: (err) => {
         console.error('An error occurred during uploads', err);
-        this.uploadStatus = 'Upload failed';
+        this.uploader.isUploading = false
+        this.setTitleToProjects()
       }
     });
   }
+
+  updateImageURLFromAPICall(res: any) {
+    res.forEach((item: { original_filename: any; url: string; }) => {
+      const index = _.findIndex(this.imageList, {
+        sanitizedName: item.original_filename
+      });
+
+      // Update the item
+      if (index !== -1) {
+        this.imageList[index].imageFile = item.url;
+      }
+    }
+    )
+  }
+
+  //updateImageListWithURLData
 
   listUpdateHandler(event: ListItem) {
     let list = this.projectData.materials
@@ -142,6 +201,15 @@ export class HomeComponent {
     }
   }
 
+  setTitleToProjects() {
+    this.title = "Seus projetos";
+    this.buttonOptions = {
+      display: true,
+      title: "Carregar projeto",
+      icon: 'bi-upload',
+      eventType: 'file'
+    };
+  }
 
   navigateToUploadProject(data: any) {
     this.router.navigate(['/home/upload-project'], { state: { data: data } });

@@ -53,7 +53,8 @@ import { ImgUploaderCellComponent } from '../pages/product-list/list/img-uploade
     ApiService,
     ToastService,
     ImageCropperService,
-    DatePipe
+    DatePipe,
+
   ]
 })
 export class SharedModule { }

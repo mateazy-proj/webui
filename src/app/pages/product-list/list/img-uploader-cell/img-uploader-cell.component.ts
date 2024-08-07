@@ -48,7 +48,7 @@ export class ImgUploaderCellComponent {
     if (file && this.acceptedImageType.includes(file.type)) {
       this.toastService.showSuccess('Sucesso', 'Imagem carregada');
 
-      this.imageCropService.resize(file, this.item.description).then((imgFile: File) => {
+      this.imageCropService.resize(file, this.item.sanitizedDescription).then((imgFile: File) => {
         //this.replaceItem(image)
         this.selectedItem.emit(this.item)
         this.imageFile.emit(imgFile)

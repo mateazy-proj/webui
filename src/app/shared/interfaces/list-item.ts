@@ -9,5 +9,6 @@ export interface projectData {
 export interface ListItem {
     imageUrl: string | File;
     description: string;
+    sanitizedDescription: string
     quantity: string;
 }

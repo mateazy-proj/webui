@@ -5,6 +5,9 @@ import { ListItem, projectData } from '../interfaces/list-item';
 import { SortColumn, SortDirection } from '../directives/sort-event.directive';
 import { environment } from '../../../environments/environment.development';
 import { DatePipe } from '@angular/common';
+import * as _ from 'lodash'
+
+
 const data = {
   "title": "CASA DP",
   "name": "PATRÍCIA FERNANDA FERREIRA DOS SANTOS",
@@ -707,7 +710,22 @@ export class ApiService {
       'Content-Type': 'multipart/form-data'
     });
     //return this.http.post<projectData>(`${environment.apiURL}/mateazy/v1/csv-processor`, file, { headers: headers })
-    return of<projectData>(data)
+    // Function to sanitize descriptions
+    const sanitizeDescription = (description: string): string => {
+      // Replace special characters; this example removes quotes, and other special characters
+      return description.replace(/["]/g, '').replace(/[^\w\s]/g, '');
+    };
+
+    // Add sanitizedDescription to each material
+    const updatedData = {
+      ...data,
+      materials: _.map(data.materials, material => ({
+        ...material,
+        sanitizedDescription: sanitizeDescription(material.description),
+
+      }))
+    };
+    return of<projectData>(updatedData)
   }
 
   uploadImage(file: File): Observable<any> {
@@ -718,6 +736,7 @@ export class ApiService {
     fd.append('cloud_name', this.cloudName);
     fd.append('public_id', publicId);
     return this.http.post(this.cloudinary_url, fd)
+    //return of(setTimeout(() => { 'completed' }, 500))
 
   }
   private getFormattedDate(): string {

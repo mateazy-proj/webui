@@ -18,8 +18,19 @@
         </div>
     </div>
     } -->
-    @if(projectData){
-    <app-upload-project [projectData]="projectData" (updateItem)="listUpdateHandler($event)"></app-upload-project>
+    @if(projectData && !uploading.isUploading){
+    <app-upload-project [projectData]="projectData" (updateItem)="listUpdateHandler($event)"
+        (imageListChange)="updateImageList($event)"></app-upload-project>
+    } @else if(uploading.isUploading) {
+    <div class="row">
+        <div class="col">
+            <div class="progress" role="progress" aria-label="Animated striped example" aria-valuenow="75"
+                aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" [ngStyle]="progressBarStyle()">
+                </div>
+            </div>
+        </div>
+    </div>
     } @else {
     <div class="row">
         <div class="col text-center">

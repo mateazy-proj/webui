@@ -5,9 +5,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { UploadProjectComponent } from './upload-project/upload-project.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ProductListModule } from '../product-list/product-list.module';
-import { ListComponent } from '../product-list/list/list.component';
+import { NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -16,11 +14,12 @@ import { ListComponent } from '../product-list/list/list.component';
     HomeComponent,
     ProjectListComponent,
     UploadProjectComponent,
+
   ],
   imports: [
     HomeRoutingModule,
     CommonModule,
-    SharedModule
+    SharedModule,
   ]
 })
 export class HomeModule { }

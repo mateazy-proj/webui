@@ -27,7 +27,7 @@ export class ListComponent implements OnChanges {
   constructor(private imageCropperService: ImageCropperService) {
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.listData)
+    //console.log(this.listData)
   }
 
   handleEditClick(item: ListItem) {
@@ -53,9 +53,10 @@ export class ListComponent implements OnChanges {
     console.log(this.imageList)
     const list: ImageList = {
       imageFile: file,
-      itemName: this.selectedItem.description
+      itemName: this.selectedItem.description,
+      sanitizedName: this.selectedItem.sanitizedDescription,
     }
-    console.log(list)
+    //console.log(list)
     const index = _.findIndex(this.imageList, { itemName: list.itemName });
 
     // Update the item
